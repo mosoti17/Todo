@@ -7,20 +7,22 @@
 //
 
 import UIKit
+import CoreData
 
 class TodoListViewControler: UITableViewController {
     
-    var itemArray = [String]()
-    let defaults = UserDefaults.standard
+    var itemArray = [Item]()
+     let filePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let  array = defaults.array(forKey: "TodoListArray") as? [String] {
-            itemArray = array
-        }else{
-            itemArray = []
-        }
-        // Do any additional setup after loading the view, typically from a nib.
+        print(filePath)
+        
+        loadItems()
+       
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -28,18 +30,20 @@ class TodoListViewControler: UITableViewController {
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "todoItemCell", for: indexPath)
-        cell.textLabel?.text = itemArray[indexPath.row]
+        let item = itemArray[indexPath.row]
+        cell.textLabel?.text = item.tittle
+        cell.accessoryType = item.done ?  .checkmark : .none
         return cell
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //itemArray[indexPath.row].setValue(!itemArray[indexPath.row].done, forKey: "done")
+       itemArray[indexPath.row].done = !itemArray[indexPath.row].done
+//        context.delete(itemArray[indexPath.row])
+//        itemArray.remove(at: indexPath.row)
         
-        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark{
-       tableView.cellForRow(at: indexPath)?.accessoryType = .none
-        }else{
-          tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-        }
-        
+        saveItems()
         tableView.deselectRow(at: indexPath, animated: true)
+        
     }
 
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
@@ -49,10 +53,14 @@ class TodoListViewControler: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) {
             (action) in
             print(textField.text!)
-            self.itemArray.append(textField.text!)
             
-            self.defaults.set(self.itemArray, forKey: "TodoListArray")
-            self.tableView.reloadData()
+            let newItem = Item(context: self.context)
+            newItem.tittle = textField.text!
+            newItem.done = false
+            self.itemArray.append(newItem)
+            
+            self.saveItems()
+        
             
         }
         alert.addTextField {
@@ -64,6 +72,25 @@ class TodoListViewControler: UITableViewController {
         alert.addAction(action)
         present(alert, animated: true, completion: nil)
         
+    }
+    
+    func saveItems(){
+        do{
+           try context.save()
+        
+        }catch{
+            print("Error saving context \(error)")
+        }
+        tableView.reloadData()
+    }
+    
+    func loadItems(){
+        let request : NSFetchRequest<Item> = Item.fetchRequest()
+        do{
+         itemArray = try context.fetch(request)
+        }catch{
+            print("Error fetching items \(error)")
+        }
     }
     
 }
