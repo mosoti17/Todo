@@ -13,6 +13,7 @@
 		A3138822219EF8E200DD800B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A3138821219EF8E200DD800B /* Assets.xcassets */; };
 		A3138825219EF8E200DD800B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A3138823219EF8E200DD800B /* LaunchScreen.storyboard */; };
 		A313883221A1828A00DD800B /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A313883021A1828A00DD800B /* DataModel.xcdatamodeld */; };
+		A313885A21A2D32000DD800B /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A313885921A2D32000DD800B /* CategoryViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		A3138824219EF8E200DD800B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A3138826219EF8E200DD800B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A313883121A1828A00DD800B /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
+		A313885921A2D32000DD800B /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 				A3138821219EF8E200DD800B /* Assets.xcassets */,
 				A3138823219EF8E200DD800B /* LaunchScreen.storyboard */,
 				A3138826219EF8E200DD800B /* Info.plist */,
+				A313885921A2D32000DD800B /* CategoryViewController.swift */,
 				A313883321A1829300DD800B /* model */,
 			);
 			path = Todo;
@@ -146,6 +149,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A313885A21A2D32000DD800B /* CategoryViewController.swift in Sources */,
 				A313881D219EF8E100DD800B /* TodoListViewControler.swift in Sources */,
 				A313883221A1828A00DD800B /* DataModel.xcdatamodeld in Sources */,
 				A313881B219EF8E100DD800B /* AppDelegate.swift in Sources */,
