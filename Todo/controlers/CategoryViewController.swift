@@ -8,9 +8,9 @@
 
 import UIKit
 import RealmSwift
+import ChameleonFramework
 
-
-class CategoryViewController: UITableViewController {
+class CategoryViewController: SwipeTableViewControler {
     
     var categoryArray : Results<Category>?
     let realm = try! Realm()
@@ -19,6 +19,7 @@ class CategoryViewController: UITableViewController {
         super.viewDidLoad()
         loadCategories()
         
+        
 
     }
     
@@ -26,8 +27,14 @@ class CategoryViewController: UITableViewController {
         return categoryArray?.count ?? 1
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-        cell.textLabel?.text = categoryArray?[indexPath.row].name ?? "No categories added yet"
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        if let category = categoryArray?[indexPath.row] {
+            let color = UIColor(hexString: category.backgroundColor)
+            cell.textLabel?.text = category.name
+            cell.backgroundColor = color
+            cell.textLabel?.textColor = ContrastColorOf(color!, returnFlat: true)
+        } 
+        
         return cell
         
     }
@@ -52,6 +59,7 @@ class CategoryViewController: UITableViewController {
             (action) in
             let category = Category()
             category.name = textField.text!
+            category.backgroundColor = UIColor.randomFlat.hexValue()
             self.save(category: category)
             
         }
@@ -85,4 +93,20 @@ class CategoryViewController: UITableViewController {
         tableView.reloadData()
         
     }
+    override func updateModel(at indexPath: IndexPath) {
+   
+            if let category = self.categoryArray?[indexPath.row]{
+                do{
+                    try self.realm.write {
+                        self.realm.delete(category)
+
+                    }
+                }catch{
+                    print("Error deleting category \(error)")
+                }
+            }
+    
+    }
 }
+
+
